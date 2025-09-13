@@ -48,6 +48,19 @@ export const CommentSystem: React.FC = () => {
     setComments(updateLikes(comments));
   };
 
+  const deleteComment = (id: number) => {
+    const removeComment = (comments: Comment[]): Comment[] => {
+      return comments
+        .filter((comment) => comment.id !== id) // remove if matches
+        .map((comment) => ({
+          ...comment,
+          replies: removeComment(comment.replies), // check inside replies too
+        }));
+    };
+
+    setComments(removeComment(comments));
+  };
+
   return (
     <div className="main">
       <h2>Comment System</h2>
@@ -73,6 +86,7 @@ export const CommentSystem: React.FC = () => {
             comment={comment}
             addReply={addReply}
             addLike={addLike}
+            deleteComment={deleteComment}
           />
         ))}
       </div>

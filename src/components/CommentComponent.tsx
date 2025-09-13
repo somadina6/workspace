@@ -5,12 +5,14 @@ type props = {
   comment: Comment;
   addReply: (parentId: number, text: string) => void;
   addLike: (id: number) => void;
+  deleteComment: (id: number) => void;
 };
 
 export const CommentComponent: React.FC<props> = ({
   comment,
   addReply,
   addLike,
+  deleteComment,
 }) => {
   const [replyText, setReplyText] = useState("");
 
@@ -31,6 +33,12 @@ export const CommentComponent: React.FC<props> = ({
             👍
           </button>
           <p>{comment.likes}</p>
+          <button
+            className="delete-button"
+            onClick={() => deleteComment(comment.id)}
+          >
+            🗑️
+          </button>
         </div>
 
         <input
@@ -57,6 +65,7 @@ export const CommentComponent: React.FC<props> = ({
           comment={reply}
           addReply={addReply}
           addLike={addLike}
+          deleteComment={deleteComment}
         />
       ))}
     </div>
