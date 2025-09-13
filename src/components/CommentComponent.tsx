@@ -4,9 +4,14 @@ import Comment from "../types/Comment";
 type props = {
   comment: Comment;
   addReply: (parentId: number, text: string) => void;
+  addLike: (id: number) => void;
 };
 
-export const CommentComponent: React.FC<props> = ({ comment, addReply }) => {
+export const CommentComponent: React.FC<props> = ({
+  comment,
+  addReply,
+  addLike,
+}) => {
   const [replyText, setReplyText] = useState("");
 
   const handleReply = () => {
@@ -17,19 +22,42 @@ export const CommentComponent: React.FC<props> = ({ comment, addReply }) => {
   };
 
   return (
-    <div style={{ marginLeft: "20px", marginTop: "1px" }}>
-      <p>{comment.text}</p>
-      <input
-        type="text"
-        value={replyText}
-        onChange={(e) => setReplyText(e.target.value)}
-        placeholder="Write a reply..."
-      />
-      <button onClick={handleReply}>Reply</button>
+    <div style={{ marginLeft: "20px", marginTop: "10px" }}>
+      <div className="comment-box">
+        <p className="comment-text">{comment.text}</p>
+
+        <div className="comment-actions">
+          <button className="like-button" onClick={() => addLike(comment.id)}>
+            👍
+          </button>
+          <p>{comment.likes}</p>
+        </div>
+
+        <input
+          type="text"
+          className="reply-input"
+          value={replyText}
+          onChange={(e) => setReplyText(e.target.value)}
+          placeholder="Write a reply..."
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleReply();
+            }
+          }}
+        />
+        <button className="button" onClick={handleReply}>
+          Reply
+        </button>
+      </div>
 
       {/* Render replies recursively */}
       {comment.replies.map((reply) => (
-        <CommentComponent key={reply.id} comment={reply} addReply={addReply} />
+        <CommentComponent
+          key={reply.id}
+          comment={reply}
+          addReply={addReply}
+          addLike={addLike}
+        />
       ))}
     </div>
   );

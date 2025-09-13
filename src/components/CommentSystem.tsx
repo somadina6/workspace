@@ -9,7 +9,10 @@ export const CommentSystem: React.FC = () => {
   // Add top level comment
   const addComment = () => {
     if (text.trim()) {
-      setComments([...comments, { id: Date.now(), text, replies: [] }]);
+      setComments([
+        ...comments,
+        { id: Date.now(), text, replies: [], likes: 0 },
+      ]);
       setText("");
     }
   };
@@ -23,7 +26,7 @@ export const CommentSystem: React.FC = () => {
               ...comment,
               replies: [
                 ...comment.replies,
-                { id: Date.now(), text: replyText, replies: [] },
+                { id: Date.now(), text: replyText, replies: [], likes: 0 },
               ],
             }
           : { ...comment, replies: updateReplies(comment.replies) }
@@ -33,16 +36,35 @@ export const CommentSystem: React.FC = () => {
     setComments(updateReplies(comments));
   };
 
+  const addLike = (id: number) => {
+    const updateLikes = (comments: Comment[]): Comment[] => {
+      return comments.map((comment) =>
+        comment.id === id
+          ? { ...comment, likes: comment.likes + 1 }
+          : { ...comment, replies: updateLikes(comment.replies) }
+      );
+    };
+
+    setComments(updateLikes(comments));
+  };
+
   return (
-    <div>
+    <div className="main">
       <h2>Comment System</h2>
       <input
         type="text"
         value={text}
         onChange={(e) => setText(e.target.value)}
         placeholder="Write a comment..."
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            addComment();
+          }
+        }}
       />
-      <button onClick={addComment}>Add Comment</button>
+      <button className="button" onClick={addComment}>
+        Add Comment
+      </button>
 
       <div>
         {comments.map((comment) => (
@@ -50,6 +72,7 @@ export const CommentSystem: React.FC = () => {
             key={comment.id}
             comment={comment}
             addReply={addReply}
+            addLike={addLike}
           />
         ))}
       </div>
