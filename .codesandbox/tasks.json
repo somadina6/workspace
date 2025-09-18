@@ -4,14 +4,6 @@
     {
       "name": "Install Dependencies",
       "command": "pnpm install"
-    },
-    {
-      "name": "dev",
-      "command": "pnpm dev",
-      "runAtStart": true,
-      "preview": {
-        "port": 5173
-      }
     }
   ],
 
@@ -30,11 +22,11 @@
       "command": "pnpm build",
       "runAtStart": false
     },
-    "preview": {
-      "name": "preview",
-      "command": "pnpm preview",
-      "runAtStart": false
-    },
+    // "preview": {
+    //   "name": "preview",
+    //   "command": "pnpm preview",
+    //   "runAtStart": false
+    // },
     "install": {
       "name": "install dependencies",
       "command": "pnpm install"
