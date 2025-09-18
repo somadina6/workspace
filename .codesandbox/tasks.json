@@ -4,6 +4,14 @@
     {
       "name": "Install Dependencies",
       "command": "pnpm install"
+    },
+    {
+      "name": "dev",
+      "command": "pnpm dev",
+      "runAtStart": true,
+      "preview": {
+        "port": 5173
+      }
     }
   ],
 
